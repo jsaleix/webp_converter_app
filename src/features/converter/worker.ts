@@ -1,4 +1,5 @@
 import { WorkerEvent } from "../../types/worker";
+import { convertWebPToJPGBase64 } from "../../utils/file";
 
 onmessage = async function (event: WorkerEvent) {
     console.log("Received message from the main thread:", event.data);
@@ -7,9 +8,7 @@ onmessage = async function (event: WorkerEvent) {
     switch (type) {
         case "convert":
             console.log("here");
-            const res = await Promise.all(
-                payload.map((file: File) => convertWebPToJPG(file))
-            );
+            const res = await convertWebPToJPG(payload);
             postMessage(res);
             break;
         default:
@@ -17,6 +16,6 @@ onmessage = async function (event: WorkerEvent) {
     }
 };
 
-const convertWebPToJPG = async (file: File): Promise<File> => {
-    return file;
+const convertWebPToJPG = async (files: File[]) => {
+    return Promise.all(files.map(convertWebPToJPGBase64));
 };

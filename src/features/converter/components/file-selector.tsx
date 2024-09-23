@@ -2,10 +2,12 @@ import { useRef, useState } from "react";
 import useFiles from "../hooks/use-files";
 
 interface Props {
+    fileType: string;
 }
 
-export default function FileSelector({  }: Props) {
-    const {addFiles} = useFiles()
+export default function FileSelector({ fileType }: Props) {
+    const { addFiles } = useFiles();
+    const accept = `image/${fileType}`;
     const formRef = useRef<HTMLFormElement | null>(null);
     const inputRef = useRef<HTMLInputElement | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -16,7 +18,7 @@ export default function FileSelector({  }: Props) {
         const rawFiles = e.target.files;
         const files: File[] = [];
         for (let file of rawFiles) {
-            if (file.type === "image/webp") {
+            if (file.type === accept) {
                 files.push(file);
             }
         }
@@ -27,12 +29,12 @@ export default function FileSelector({  }: Props) {
     return (
         <form ref={formRef}>
             {error && <p>{error}</p>}
-            <label htmlFor="webp_input">
+            <label htmlFor="file_input">
                 <input
                     multiple
-                    name="webp_input"
+                    name="file_input"
                     type="file"
-                    accept="image/webp"
+                    accept={accept}
                     ref={inputRef}
                     onChange={handleFileChange}
                 />

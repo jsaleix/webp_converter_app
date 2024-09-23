@@ -1,63 +1,41 @@
-import { useRef, useState, useEffect } from "react";
-import FileSelector from "./components/file-selector";
-import MyWorker from "./worker?worker";
-import FilesPreviewPart from "./components/files-preview-part";
-import ActionsPart from "./components/actions-part";
-import useFiles from "./hooks/use-files";
+import { useState } from "react";
+import Converter from "./converter";
+import { ImgFileType } from "../../types/file";
 
-interface Props {}
+interface OrderState {
+    toExtension: ImgFileType;
+    fromExtension: ImgFileType;
+}
 
-export default function ConverterPage({}: Props) {
-    const workerRef = useRef<Worker | null>(null);
-    const { files, resetFiles } = useFiles();
-    const [loading, setLoading] = useState(false);
-    const canStartProcess = !loading && files.length > 0;
+export default function ConverterPage() {
+    const [order, setOrder] = useState<OrderState>({
+        toExtension: "jpeg",
+        fromExtension: "webp",
+    });
 
-    const startProcess = () => {
-        if (!canStartProcess) {
-            return;
-        }
-        setLoading(true);
-        workerRef.current?.postMessage({
-            type: "convert",
-            payload: files,
-        });
-    };
-
-    useEffect(() => {
-        const worker = new MyWorker();
-
-        worker.onmessage = (e) => {
-            console.log("Received result from worker:", e.data);
-            resetFiles();
-            const res = e.data;
-            res.forEach((file: File) => {
-                const url = URL.createObjectURL(file);
-                const link = document.createElement("a");
-                link.href = url;
-                link.download = file.name;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url); // Libère l'URL Blob
+    const toggleOrder = () => {
+        if (order.toExtension === "jpeg") {
+            setOrder({
+                toExtension: "webp",
+                fromExtension: "jpeg",
             });
-            setLoading(false);
-        };
-
-        workerRef.current = worker;
-        return () => worker.terminate();
-    }, []);
+        } else {
+            setOrder({
+                toExtension: "jpeg",
+                fromExtension: "webp",
+            });
+        }
+    };
 
     return (
         <div>
-            <FileSelector />
-            <FilesPreviewPart />
-            <hr />
-            <ActionsPart
-                loading={loading}
-                startAction={startProcess}
-                disabled={!canStartProcess}
-            />
+            <div>
+                <h2>
+                    From {order.fromExtension} to {order.toExtension}
+                </h2>
+                <button onClick={toggleOrder}>Toggle</button>
+            </div>
+            <Converter {...order} />
         </div>
     );
 }
