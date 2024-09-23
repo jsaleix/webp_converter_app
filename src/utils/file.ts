@@ -1,3 +1,5 @@
+import { ImgFileType } from "../types/file";
+
 export function getBase64(fileToConvert: File): Promise<string> {
     return new Promise((res) => {
         const reader = new FileReader();
@@ -8,7 +10,7 @@ export function getBase64(fileToConvert: File): Promise<string> {
 
 export const convertImg = (
     webpFile: File,
-    type: "jpeg" | "webp"
+    type: ImgFileType
 ): Promise<string> => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -28,21 +30,18 @@ export const convertImg = (
                 if (ctx) {
                     ctx.drawImage(img, 0, 0);
 
-                    const jpgBase64 = canvas.toDataURL(`image/${type}`, 1); // 1 = qualité maximale
-                    resolve(jpgBase64); // Renvoie la chaîne Base64
+                    const jpgBase64 = canvas.toDataURL(`image/${type}`, 1);
+                    resolve(jpgBase64);
                 } else {
-                    reject(
-                        new Error("Impossible d'obtenir le contexte du canvas.")
-                    );
+                    reject(new Error("Could not get canvas context."));
                 }
             };
 
-            img.onerror = () =>
-                reject(new Error("Échec du chargement de l'image."));
+            img.onerror = () => reject(new Error("Fail during image loading."));
         };
 
         reader.onerror = () =>
-            reject(new Error("Échec de la lecture du fichier."));
+            reject(new Error("Error while reading the file."));
         reader.readAsDataURL(webpFile);
     });
 };

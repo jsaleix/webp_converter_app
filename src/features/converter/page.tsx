@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Converter from "./converter";
-import { ImgFileType } from "../../types/file";
+import { ImgFileType, ImgFileValues } from "../../types/file";
 
 interface OrderState {
     toExtension: ImgFileType;
@@ -9,20 +9,20 @@ interface OrderState {
 
 export default function ConverterPage() {
     const [order, setOrder] = useState<OrderState>({
-        toExtension: "jpeg",
-        fromExtension: "webp",
+        toExtension: ImgFileValues.JPEG,
+        fromExtension: ImgFileValues.WEBP,
     });
 
     const toggleOrder = () => {
-        if (order.toExtension === "jpeg") {
+        if (order.toExtension === ImgFileValues.JPEG) {
             setOrder({
-                toExtension: "webp",
-                fromExtension: "jpeg",
+                toExtension: ImgFileValues.WEBP,
+                fromExtension: ImgFileValues.JPEG,
             });
         } else {
             setOrder({
-                toExtension: "jpeg",
-                fromExtension: "webp",
+                toExtension: ImgFileValues.JPEG,
+                fromExtension: ImgFileValues.WEBP,
             });
         }
     };
