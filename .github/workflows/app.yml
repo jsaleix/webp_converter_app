@@ -1,0 +1,42 @@
+name: Front tests
+
+on:
+    push:
+        paths:
+            - "**"
+jobs:
+    run-app:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 9
+                  run_install: false
+
+            - name: Install Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: "pnpm"
+
+            - name: Install dep
+              run: pnpm install
+
+            - name: Try to build
+              run: pnpm build
+
+    deploy:
+        needs: run-app
+        runs-on: ubuntu-latest
+        if: github.ref == 'refs/heads/master'
+        steps:
+            - name: Deploy to production
+              run: |
+                  curl \
+                  --request GET '${{ secrets.DEPLOY_HOOK_FRONT }}' \
+                  --header 'Authorization: Bearer ${{ secrets.DEPLOY_HOOK_SECRET }}'
