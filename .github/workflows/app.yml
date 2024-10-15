@@ -38,5 +38,5 @@ jobs:
             - name: Deploy to production
               run: |
                   curl \
-                  --request GET '${{ secrets.DEPLOY_HOOK_FRONT }}' \
+                  --request GET '${{ secrets.DEPLOY_HOOK_APP }}' \
                   --header 'Authorization: Bearer ${{ secrets.DEPLOY_HOOK_SECRET }}'
