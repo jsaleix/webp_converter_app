@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Converter from "./converter";
 import { ImgFileType, ImgFileValues } from "../../types/file";
-import Button from "../../components/common/button";
 import SwitchIcon from "./components/icons/switch-icon";
 
 interface OrderState {
@@ -32,23 +31,28 @@ export default function ConverterPage() {
     };
 
     return (
-        <div className="w-100 py-5">
-            <div className="container mx-auto flex flex-col items-center gap-5">
-                <div className="flex justify-center items-center gap-3">
-                    <h2 className="text-2xl">
-                        From{" "}
-                        <span className={extensionClass}>
-                            {order.fromExtension}
-                        </span>{" "}
-                        to{" "}
-                        <span className={extensionClass}>
-                            {order.toExtension}
-                        </span>
-                    </h2>
-                    <SwitchIcon
-                        onClick={toggleOrder}
-                        className="cursor-pointer hover:opacity-60 duration-75"
-                    />
+        <div className="w-full h-full md:py-5">
+            <div className="container mx-auto flex flex-col items-center gap-0 md:gap-5">
+                <div className="flex flex-col items-center gap-1 py-5 md:py-0">
+                    <div className="flex justify-center items-center gap-3">
+                        <h2 className="text-2xl">
+                            From{" "}
+                            <span className={extensionClass}>
+                                {order.fromExtension}
+                            </span>{" "}
+                            to{" "}
+                            <span className={extensionClass}>
+                                {order.toExtension}
+                            </span>
+                        </h2>
+                        <SwitchIcon
+                            onClick={toggleOrder}
+                            className="cursor-pointer hover:opacity-60 duration-75"
+                        />
+                    </div>
+                    <p className="font-light w-80 md:w-fit md:text-xl text-slate-700 text-center">
+                        Convert your files locally in your browser (for free)
+                    </p>
                 </div>
                 <Converter {...order} />
             </div>

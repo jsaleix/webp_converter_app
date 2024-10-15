@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import FileSelector from "./components/file-selector";
 // import MyWorker from "./worker?worker";
 import FilesPreviewPart from "./components/files-preview-part";
@@ -67,7 +67,11 @@ export default function Converter({ fromExtension, toExtension }: Props) {
     }, [fromExtension, toExtension]);
 
     return (
-        <div className={"checkboard_pattern w-full p-5 bg-slate-700 flex flex-col items-center gap-3"}>
+        <div
+            className={
+                "py-32 md:py-16 px-5 checkboard_pattern w-full bg-slate-700 flex flex-col items-center gap-3"
+            }
+        >
             <FileSelector fileType={fromExtension} />
             <FilesPreviewPart />
             <hr className="divider" />

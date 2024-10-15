@@ -11,7 +11,7 @@ export default function FilesPreviewPart({}: Props) {
     return (
         <div className="w-100 p-5 rounded-md bg-gray-100 flex flex-col items-center gap-5">
             <h2 className="text-xl">Selected files:</h2>
-            <div className="grid grid-cols-5 gap-5">
+            <div className="scrollbar-hide max-h-56 overflow-y-scroll grid grid-cols-2 md:grid-cols-5 gap-5">
                 {files.map((file, idx) => (
                     <ImgPreview
                         file={file}

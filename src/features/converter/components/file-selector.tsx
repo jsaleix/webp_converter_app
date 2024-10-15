@@ -32,7 +32,7 @@ export default function FileSelector({ fileType }: Props) {
             {error && <p>{error}</p>}
             <label
                 htmlFor="file_input"
-                className="bg-red-600 py-5 px-10 rounded flex items-center justify-center gap-2 cursor-pointer uppercase text-white duration-150 hover:opacity-80"
+                className="select-none bg-red-600 py-5 px-10 rounded flex items-center justify-center gap-2 cursor-pointer uppercase text-white duration-150 hover:opacity-80"
             >
                 <UploadIcon />
                 Select Files
