@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import useFiles from "../hooks/use-files";
+import UploadIcon from "./icons/upload-icon";
 
 interface Props {
     fileType: string;
@@ -27,18 +28,25 @@ export default function FileSelector({ fileType }: Props) {
     };
 
     return (
-        <form ref={formRef}>
+        <form ref={formRef} className="w-full flex flex-col items-center">
             {error && <p>{error}</p>}
-            <label htmlFor="file_input">
-                <input
-                    multiple
-                    name="file_input"
-                    type="file"
-                    accept={accept}
-                    ref={inputRef}
-                    onChange={handleFileChange}
-                />
+            <label
+                htmlFor="file_input"
+                className="bg-red-600 py-5 px-10 rounded flex items-center justify-center gap-2 cursor-pointer uppercase text-white duration-150 hover:opacity-80"
+            >
+                <UploadIcon />
+                Select Files
             </label>
+            <input
+                multiple
+                id="file_input"
+                name="file_input"
+                type="file"
+                accept={accept}
+                ref={inputRef}
+                onChange={handleFileChange}
+                className="hidden"
+            />
         </form>
     );
 }

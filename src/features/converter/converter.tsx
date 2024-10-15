@@ -67,10 +67,10 @@ export default function Converter({ fromExtension, toExtension }: Props) {
     }, [fromExtension, toExtension]);
 
     return (
-        <div>
+        <div className={"checkboard_pattern w-full p-5 bg-slate-700 flex flex-col items-center gap-3"}>
             <FileSelector fileType={fromExtension} />
             <FilesPreviewPart />
-            <hr />
+            <hr className="divider" />
             <ActionsPart
                 loading={loading}
                 startAction={startProcess}

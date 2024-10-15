@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Converter from "./converter";
 import { ImgFileType, ImgFileValues } from "../../types/file";
+import Button from "../../components/common/button";
+import SwitchIcon from "./components/icons/switch-icon";
 
 interface OrderState {
     toExtension: ImgFileType;
@@ -8,6 +10,8 @@ interface OrderState {
 }
 
 export default function ConverterPage() {
+    const extensionClass = "uppercase text-red-500 font-bold";
+
     const [order, setOrder] = useState<OrderState>({
         toExtension: ImgFileValues.JPEG,
         fromExtension: ImgFileValues.WEBP,
@@ -28,14 +32,26 @@ export default function ConverterPage() {
     };
 
     return (
-        <div>
-            <div>
-                <h2>
-                    From {order.fromExtension} to {order.toExtension}
-                </h2>
-                <button onClick={toggleOrder}>Toggle</button>
+        <div className="w-100 py-5">
+            <div className="container mx-auto flex flex-col items-center gap-5">
+                <div className="flex justify-center items-center gap-3">
+                    <h2 className="text-2xl">
+                        From{" "}
+                        <span className={extensionClass}>
+                            {order.fromExtension}
+                        </span>{" "}
+                        to{" "}
+                        <span className={extensionClass}>
+                            {order.toExtension}
+                        </span>
+                    </h2>
+                    <SwitchIcon
+                        onClick={toggleOrder}
+                        className="cursor-pointer hover:opacity-60 duration-75"
+                    />
+                </div>
+                <Converter {...order} />
             </div>
-            <Converter {...order} />
         </div>
     );
 }
