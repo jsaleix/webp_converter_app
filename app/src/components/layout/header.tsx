@@ -1,5 +1,5 @@
 import Logo from "../../assets/logo.svg";
-import { CLI_APP_URL, REPO_URL } from "../../config/links";
+import { GO_APP_URL, REPO_URL } from "../../config/links";
 
 interface Props {}
 
@@ -26,8 +26,8 @@ export default function Header({}: Props) {
                             </a>
                         </li>
                         <li className={liStyle}>
-                            <a href={CLI_APP_URL} target="_blank">
-                                CLI APP
+                            <a href={GO_APP_URL} target="_blank">
+                                GO APP
                             </a>
                         </li>
                     </ul>
