@@ -28,6 +28,9 @@ jobs:
             - name: Install dep
               run: pnpm install
 
+            - name: Run tests
+              run: pnpm playwright test
+
             - name: Try to build
               run: pnpm build
 
