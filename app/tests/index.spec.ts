@@ -1,16 +1,15 @@
 import { test, expect } from "@playwright/test";
 
-const URL = "http://localhost:5173/";
+test.beforeEach(async ({ page }) => {
+    const URL = "http://localhost:5173/";
+    await page.goto(URL);
+});
 
 test("has title", async ({ page }) => {
-    await page.goto(URL);
-
     await expect(page).toHaveTitle("Convert your webp files locally");
 });
 
 test("Can start conversion", async ({ page }) => {
-    await page.goto(URL);
-
     const selectInputBtn = page.getByTestId("select-btn");
     const convertFileBtn = page.getByTestId("convert-btn");
     const filesPreviewDiv = page.getByTestId("files-preview-container");
@@ -26,8 +25,6 @@ test("Can start conversion", async ({ page }) => {
 });
 
 test("Only accepts right file type", async ({ page }) => {
-    await page.goto(URL);
-
     const selectInputBtn = page.getByTestId("select-btn");
     const filesPreviewDiv = page.getByTestId("files-preview-container");
     const filesItems = filesPreviewDiv.locator(">div");
@@ -46,8 +43,6 @@ test("Only accepts right file type", async ({ page }) => {
 });
 
 test("Can delete an item", async ({ page }) => {
-    await page.goto(URL);
-
     const selectInputBtn = page.getByTestId("select-btn");
     const filesPreviewDiv = page.getByTestId("files-preview-container");
     const convertFileBtn = page.getByTestId("convert-btn");
@@ -72,4 +67,40 @@ test("Can delete an item", async ({ page }) => {
     await filesItems.nth(0).click();
     await expect(filesPreviewDiv).toHaveCount(0);
     await expect(convertFileBtn).toBeDisabled();
+});
+
+// These tests are not working while running playwright in ui mode
+test.describe("Conversion tests", () => {
+    test("Try webp to jpeg", async ({ page }) => {
+        const selectInputBtn = page.getByTestId("select-btn");
+        const convertFileBtn = page.getByTestId("convert-btn");
+
+        await selectInputBtn.setInputFiles("./tests/assets/image.webp");
+        await convertFileBtn.click();
+
+        const downloadPromise = page.waitForEvent("download");
+        const download = await downloadPromise;
+
+        // await download.saveAs(
+        //     "./tests/assets/downloads/" + download.suggestedFilename()
+        // );
+
+        await expect(download.suggestedFilename()).toBe("image.jpeg");
+    });
+
+    test("Try jpeg to webp", async ({ page }) => {
+        const selectInputBtn = page.getByTestId("select-btn");
+        const convertFileBtn = page.getByTestId("convert-btn");
+        const switchBtn = page.getByTestId("switch-format-btn");
+
+        await switchBtn.click();
+
+        await selectInputBtn.setInputFiles("./tests/assets/image.jpeg");
+        await convertFileBtn.click();
+
+        const downloadPromise = page.waitForEvent("download");
+        const download = await downloadPromise;
+
+        await expect(download.suggestedFilename()).toBe("image.webp");
+    });
 });
