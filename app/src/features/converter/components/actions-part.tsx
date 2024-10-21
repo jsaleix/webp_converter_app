@@ -24,6 +24,7 @@ export default function ActionsPart({ loading, startAction, disabled }: Props) {
             className={clsx(baseStyle, disabled ? disabledStyle : activeStyle)}
             disabled={disabled}
             onClick={startAction}
+            data-testid="convert-btn"
         >
             Convert files
         </button>

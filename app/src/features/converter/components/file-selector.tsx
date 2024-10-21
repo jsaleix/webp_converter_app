@@ -33,6 +33,7 @@ export default function FileSelector({ fileType }: Props) {
             <label
                 htmlFor="file_input"
                 className="select-none bg-red-600 py-5 px-10 rounded flex items-center justify-center gap-2 cursor-pointer uppercase text-white duration-150 hover:opacity-80"
+                data-testid="select-btn"
             >
                 <UploadIcon />
                 Select Files

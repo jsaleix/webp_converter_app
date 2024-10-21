@@ -46,6 +46,7 @@ export default function ConverterPage() {
                             </span>
                         </h2>
                         <SwitchIcon
+                            data-testid="switch-format-btn"
                             onClick={toggleOrder}
                             className="cursor-pointer hover:opacity-60 duration-75"
                         />
