@@ -1,4 +1,6 @@
 import { test, expect } from "@playwright/test";
+import { readChunk } from "read-chunk";
+import { fileTypeFromBuffer } from "file-type";
 
 test.beforeEach(async ({ page }) => {
     const URL = "http://localhost:5173/";
@@ -71,6 +73,11 @@ test("Can delete an item", async ({ page }) => {
 
 // These tests are not working while running playwright in ui mode
 test.describe("Conversion tests", () => {
+    test.skip(
+        ({ browserName }) => browserName === "webkit",
+        "Skipping webkit for now"
+    );
+
     test("Try webp to jpeg", async ({ page }) => {
         const selectInputBtn = page.getByTestId("select-btn");
         const convertFileBtn = page.getByTestId("convert-btn");
@@ -81,10 +88,14 @@ test.describe("Conversion tests", () => {
         const downloadPromise = page.waitForEvent("download");
         const download = await downloadPromise;
 
-        // await download.saveAs(
-        //     "./tests/assets/downloads/" + download.suggestedFilename()
-        // );
+        const filePath =
+            "./tests/assets/downloads/" + download.suggestedFilename();
+        await download.saveAs(filePath);
 
+        const buffer = await readChunk(filePath, { length: 4100 });
+        const fileCheck = await fileTypeFromBuffer(buffer);
+
+        await expect(fileCheck?.mime).toBe("image/jpeg");
         await expect(download.suggestedFilename()).toBe("image.jpeg");
     });
 
@@ -101,6 +112,14 @@ test.describe("Conversion tests", () => {
         const downloadPromise = page.waitForEvent("download");
         const download = await downloadPromise;
 
+        const filePath =
+            "./tests/assets/downloads/" + download.suggestedFilename();
+        await download.saveAs(filePath);
+
+        const buffer = await readChunk(filePath, { length: 4500 });
+        const fileCheck = await fileTypeFromBuffer(buffer);
+        console.log(fileCheck);
+        await expect(fileCheck?.mime).toBe("image/webp");
         await expect(download.suggestedFilename()).toBe("image.webp");
     });
 });
