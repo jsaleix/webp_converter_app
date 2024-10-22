@@ -118,7 +118,7 @@ test.describe("Conversion tests", () => {
 
         const buffer = await readChunk(filePath, { length: 4500 });
         const fileCheck = await fileTypeFromBuffer(buffer);
-        console.log(fileCheck);
+
         await expect(fileCheck?.mime).toBe("image/webp");
         await expect(download.suggestedFilename()).toBe("image.webp");
     });
