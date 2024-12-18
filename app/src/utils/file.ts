@@ -10,7 +10,7 @@ export function getBase64(fileToConvert: File): Promise<string> {
 
 export const convertImg = (
     webpFile: File,
-    type: ImgFileType
+    toType: ImgFileType
 ): Promise<string> => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -30,7 +30,7 @@ export const convertImg = (
                 if (ctx) {
                     ctx.drawImage(img, 0, 0);
 
-                    const jpgBase64 = canvas.toDataURL(`image/${type}`, 1);
+                    const jpgBase64 = canvas.toDataURL(`image/${toType}`, 1);
                     resolve(jpgBase64);
                 } else {
                     reject(new Error("Could not get canvas context."));
